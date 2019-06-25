@@ -3,11 +3,11 @@
 ## from https://github.com/elastic/kibana-docker/blob/master/build/kibana/config/kibana-full.yml
 #
 server.name: kibana
-server.host: "0"
+server.host: "0.0.0.0"
 elasticsearch.url: http://elasticsearch:9200
-xpack.monitoring.ui.container.elasticsearch.enabled: true
+#xpack.monitoring.ui.container.elasticsearch.enabled: false
 
 ## X-Pack security credentials
 #
-elasticsearch.username: elastic
-elasticsearch.password: changeme
+#elasticsearch.username: elastic
+#elasticsearch.password: changeme

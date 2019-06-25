@@ -2,8 +2,9 @@
 ## Default Elasticsearch configuration from elasticsearch-docker.
 ## from https://github.com/elastic/elasticsearch-docker/blob/master/build/elasticsearch/elasticsearch.yml
 #
-cluster.name: "docker-cluster"
+cluster.name: "elastic-prod"
 network.host: 0.0.0.0
+cluster.routing.allocation.enable: all
 
 # minimum_master_nodes need to be explicitly set when bound on a public IP
 # set to 1 to allow single node clusters
@@ -18,5 +19,6 @@ discovery.type: single-node
 ## X-Pack settings
 ## see https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-xpack.html
 #
-xpack.license.self_generated.type: trial
-xpack.security.enabled: true
+# xpack.license.self_generated.type: trial
+#xpack.license.self_generated.type: basic
+#xpack.security.enabled: false
