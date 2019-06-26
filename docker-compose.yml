@@ -6,6 +6,7 @@ services:
       context: elasticsearch/
       args:
         ELK_VERSION: $ELK_VERSION
+    restart: always
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
       - ./elasticsearch/data:/usr/share/elasticsearch/data
@@ -22,10 +23,10 @@ services:
       context: logstash/
       args:
         ELK_VERSION: $ELK_VERSION
+    restart: always
     volumes:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
-      - ./logstash/data:/var/lib/logstash
     ports:
       - "5044:5044"
       - "9600:9600"
@@ -41,15 +42,31 @@ services:
       context: kibana/
       args:
         ELK_VERSION: $ELK_VERSION
+    restart: always
     volumes:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro
-      - ./kibana/data:/var/lib/kibana
     ports:
       - "5601:5601"
     networks:
       - elk
     depends_on:
       - elasticsearch
+
+  elastalert:
+    build:
+      context: elastalert\
+    restart: always
+    volumes:
+      - ./elastalert/config/elastalert.yml:/etc/elastalert/elastalert.yml:ro
+      - ./elastalert/rules:/usr/share/elastalert/rules
+    ports:
+      - "3030:3030"
+    environment:
+      ELASTIC_PWD:
+      ELASTICSEARCH_HOST: elasticsearch
+      ELASTICSEARCH_PORT: 9200
+    networks:
+      - elk
 
 networks:
   elk:
