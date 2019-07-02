@@ -4,10 +4,17 @@
 #
 server.name: kibana
 server.host: "0.0.0.0"
-elasticsearch.url: http://elasticsearch:9200
+elasticsearch.hosts:
+  - http://elasticsearch:9200
 #xpack.monitoring.ui.container.elasticsearch.enabled: false
 
 ## X-Pack security credentials
 #
 #elasticsearch.username: elastic
 #elasticsearch.password: changeme
+#elasticsearch.password: Evolut!3321
+
+## Elastalert plugin
+#
+elastalert-kibana-plugin.serverHost: 172.29.0.5
+elastalert-kibana-plugin.serverPort: 3030

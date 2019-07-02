@@ -2,6 +2,7 @@ version: '2.3'
 
 services:
   elasticsearch:
+    container_name: monitor_elasticsearch
     build:
       context: elasticsearch/
       args:
@@ -9,7 +10,7 @@ services:
     restart: always
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-      - ./elasticsearch/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/data:/usr/share/elasticsearch/data:rw
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -19,6 +20,7 @@ services:
       - elk
 
   logstash:
+    container_name: monitor_logstash
     build:
       context: logstash/
       args:
@@ -38,6 +40,7 @@ services:
       - elasticsearch
 
   kibana:
+    container_name: monitor_kibana
     build:
       context: kibana/
       args:
@@ -53,20 +56,21 @@ services:
       - elasticsearch
 
   elastalert:
-    build:
-      context: elastalert\
-    restart: always
-    volumes:
-      - ./elastalert/config/elastalert.yml:/etc/elastalert/elastalert.yml:ro
-      - ./elastalert/rules:/usr/share/elastalert/rules
+    links:
+      - elasticsearch
+    container_name: monitor_elastalert
+    image: khezen/elastalert
     ports:
       - "3030:3030"
     environment:
-      ELASTIC_PWD:
       ELASTICSEARCH_HOST: elasticsearch
       ELASTICSEARCH_PORT: 9200
+    volumes:
+      - ./elastalert/config:/etc/elastalert
+      - ./elastalert/rules:/usr/share/elastalert/rules
     networks:
       - elk
+    restart: always
 
 networks:
   elk:

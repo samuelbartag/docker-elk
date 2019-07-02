@@ -1,0 +1,4 @@
+rules_folder: /usr/share/elastalert/rules
+
+es_host: elasticsearch
+es_port: 9200

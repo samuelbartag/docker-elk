@@ -10,8 +10,8 @@ es_port: 9200
 #use_ssl: True
 
 # (Optional) basic-auth username and password for Elasticsearch
-#es_username: someusername
-#es_password: somepassword
+#es_username: elastic
+#es_password: changeme
 
 # (Required)
 # Rule name, must be unique
