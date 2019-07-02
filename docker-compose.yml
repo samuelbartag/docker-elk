@@ -59,15 +59,13 @@ services:
     links:
       - elasticsearch
     container_name: monitor_elastalert
-    image: khezen/elastalert
-    ports:
-      - "3030:3030"
-    environment:
-      ELASTICSEARCH_HOST: elasticsearch
-      ELASTICSEARCH_PORT: 9200
+    image: bitsensor/elastalert:latest
+#    ports:
+#      - "3030:3030"
     volumes:
-      - ./elastalert/config:/etc/elastalert
-      - ./elastalert/rules:/usr/share/elastalert/rules
+      - ./elastalert/config/elastalert.yaml:/opt/elastalert/config.yaml
+      - ./elastalert/config/config.json:/opt/elastalert-server/config/config.json
+      - ./elastalert/rules:/opt/elastalert/rules
     networks:
       - elk
     restart: always
