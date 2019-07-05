@@ -1,3 +1,4 @@
 elasticsearch/data/
 logstash/certs/
+elastalert/data/
 .idea/

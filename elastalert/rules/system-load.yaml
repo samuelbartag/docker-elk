@@ -1,0 +1,38 @@
+name: System load greater 80pct
+
+es_host: elasticsearch
+es_port: 9200
+
+index: metricbeat-*
+timestamp_field: "@timestamp"
+
+type: any
+
+realert:
+    minutes: 1
+
+filter:
+    - term:
+        metricset.module: "system"
+    - term:
+        metricset.name: "load"
+    - range:
+        system.load.1:
+            from: 1.5
+            to: *
+
+num_events: 1
+
+alert_text_type: alert_text_only
+include : ["host.name","system.load.1","system.load.5","system.load.15"]
+
+alert:
+  - "slack"
+alert_text: "CPU Load\n\n
+*Load*          : {1}, {2}, {3}\n
+*Host*          : {0}"
+
+alert_text_args: ["host.name","system.load.1","system.load.5","system.load.15"]
+
+slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_emoji_override: ":heavy_exclamation_mark:"

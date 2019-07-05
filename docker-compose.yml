@@ -54,21 +54,25 @@ services:
       - elk
     depends_on:
       - elasticsearch
+      - elastalert
 
   elastalert:
-    links:
-      - elasticsearch
     container_name: monitor_elastalert
-    image: bitsensor/elastalert:latest
-#    ports:
-#      - "3030:3030"
+    image: bitsensor/elastalert:2.0.0
+    restart: always
+    ports:
+      - "3030:3030"
+      - "3333:3333"
     volumes:
-      - ./elastalert/config/elastalert.yaml:/opt/elastalert/config.yaml
+      - ./elastalert/config/elastalert.yml:/opt/elastalert/config.yaml
       - ./elastalert/config/config.json:/opt/elastalert-server/config/config.json
-      - ./elastalert/rules:/opt/elastalert/rules
+      - ./elastalert/rule_templates:/opt/elastalert/rule_templates:rw
+      - ./elastalert/rules:/opt/elastalert/rules:rw
+      - ./elastalert/data:/opt/elastalert/server_data:rw
     networks:
       - elk
-    restart: always
+    depends_on:
+      - elasticsearch
 
 networks:
   elk:

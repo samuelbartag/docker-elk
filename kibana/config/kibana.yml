@@ -16,5 +16,5 @@ elasticsearch.hosts:
 
 ## Elastalert plugin
 #
-elastalert-kibana-plugin.serverHost: 172.29.0.5
+elastalert-kibana-plugin.serverHost: elastalert
 elastalert-kibana-plugin.serverPort: 3030

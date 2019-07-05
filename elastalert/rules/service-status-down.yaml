@@ -1,0 +1,30 @@
+name: Service down
+
+es_host: elasticsearch
+es_port: 9200
+
+index: heartbeat-*
+timestamp_field: "@timestamp"
+
+type: any
+
+filter:
+    - term:
+        monitor.status: "up"
+
+num_events: 1
+
+alert_text_type: alert_text_only
+include : ["http.url","monitor.name","monitor.status"]
+
+alert:
+  - "slack"
+alert_text: "Service Down\n\n
+*Service*       : {1}\n
+*Status*        : {2}\n
+*Host*          : {0}"
+
+alert_text_args: ["http.url","monitor.name","monitor.status"]
+
+slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_emoji_override: ":heavy_exclamation_mark:"

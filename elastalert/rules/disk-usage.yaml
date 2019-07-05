@@ -1,0 +1,40 @@
+name: Disk Usage greater 90pct
+
+es_host: elasticsearch
+es_port: 9200
+
+index: metricbeat-*
+timestamp_field: "@timestamp"
+
+type: any
+
+realert:
+    days: 1
+
+filter:
+    - term:
+        metricset.module: "system"
+    - term:
+        metricset.name: "filesystem"
+    - range:
+        system.filesystem.used.pct:
+            from: 0.9
+            to: 1
+
+num_events: 1
+
+alert_text_type: alert_text_only
+include: ["host.name","system.filesystem.used.pct","system.filesystem.mount_point"]
+
+alert:
+  - "slack"
+alert_text: "Disk usage alert\n\n
+*Used %*        : {0}\n
+*Mount Point*   : {2}\n
+*Host*          : {1}"
+
+alert_text_args: ["system.filesystem.used.pct","host.name","system.filesystem.mount_point"]
+
+slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_emoji_override: ":heavy_exclamation_mark:"
+
